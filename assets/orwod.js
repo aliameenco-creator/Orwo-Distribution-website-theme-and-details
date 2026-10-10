@@ -39,15 +39,12 @@
   const here = location.pathname.replace(/\/+$/, '') || '/';
   d.querySelectorAll('.menu > li > a').forEach((a) => {
     const path = new URL(a.href, location.href).pathname.replace(/\/+$/, '') || '/';
-    if (path === here && !a.classList.contains('button')) a.classList.add('current');
+    if (path === here && !a.hash && !a.classList.contains('button')) a.classList.add('current');
   });
 
-  // Mobile menu panel (opens directly under the header) and dropdowns (hover on desktop via CSS, tap/keyboard everywhere).
+  // Mobile menu panel (opens directly under the header).
   const toggle = d.querySelector('.menu-toggle');
   const nav = d.getElementById('navigation');
-  const closeSubs = (except) => d.querySelectorAll('.has-sub.open').forEach((li) => {
-    if (li !== except) { li.classList.remove('open'); li.querySelector('.sub-toggle').setAttribute('aria-expanded', 'false'); }
-  });
   const closeMenu = () => { d.body.classList.remove('menu-open'); if (toggle) toggle.setAttribute('aria-expanded', 'false'); };
   if (nav) [...nav.querySelectorAll('.menu > li')].forEach((li, i) => li.style.setProperty('--i', String(i)));
   if (toggle) toggle.addEventListener('click', () => {
@@ -55,17 +52,37 @@
     const open = d.body.classList.toggle('menu-open');
     toggle.setAttribute('aria-expanded', String(open));
   });
-  d.querySelectorAll('.sub-toggle').forEach((btn) => btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const li = btn.parentElement;
-    const open = !li.classList.contains('open');
-    closeSubs(li);
-    li.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-  }));
-  d.addEventListener('click', (e) => { if (!e.target.closest('.has-sub')) closeSubs(); });
-  if (nav) nav.addEventListener('click', (e) => { if (e.target.closest('a')) { closeMenu(); closeSubs(); } });
-  d.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeSubs(); closeMenu(); } });
+  if (nav) nav.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+  // Homepage hero: film stills crossfade (slow zoom) with the matching "now showing" entry; pauses on hover.
+  const hero = d.querySelector('[data-hero]');
+  const slides = hero ? [...hero.querySelectorAll('.hero-slide')] : [];
+  const nowItems = hero ? [...hero.querySelectorAll('.now-item')] : [];
+  if (slides.length > 1) {
+    const duration = 7000;
+    hero.style.setProperty('--slide', duration + 'ms');
+    let current = 0;
+    let timer = null;
+    const go = (i) => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle('active', n === current));
+      nowItems.forEach((a, n) => {
+        a.classList.remove('active');
+        if (n === current) { void a.offsetWidth; a.classList.add('active'); }
+      });
+      const img = slides[(current + 1) % slides.length].querySelector('img');
+      if (img && img.loading === 'lazy') img.loading = 'eager';
+    };
+    const play = () => { if (!reduce && !timer) timer = window.setInterval(() => go(current + 1), duration); };
+    const pause = () => { if (timer) { window.clearInterval(timer); timer = null; } };
+    nowItems.forEach((a) => {
+      a.addEventListener('mouseenter', () => { if (window.matchMedia('(hover: hover)').matches) { pause(); go(parseInt(a.dataset.slide, 10)); } });
+      a.addEventListener('mouseleave', play);
+    });
+    d.addEventListener('visibilitychange', () => (d.hidden ? pause() : play()));
+    play();
+  }
 
   // Reveal on scroll (staggered siblings).
   const items = [...d.querySelectorAll('[data-reveal]')];

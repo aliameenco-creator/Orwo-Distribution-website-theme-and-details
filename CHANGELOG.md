@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 — 2026-10-10
+
+- New homepage hero: full-colour stills from the films' own banners crossfade with a slow zoom, a "Now showing"
+  panel lists those titles (hover to preview, click to open the film), soft gradient instead of the dark navy flood.
+  Phones get a swipeable now-showing strip. Stills do not rotate for visitors who prefer reduced motion.
+- Header: flat menu without a dropdown — DISTRIBUTION, 2024 TITLES, STUDIO, (BLOG once posts exist), search,
+  CONTACT US. About Jake Seal is no longer in the top menu (still in the footer).
+- Pages: the original pages now appear under Pages and are editable — Distribution (homepage; its text is the hero
+  tagline), Studio (intro text; the services, quotes and gallery stay designed), About Jake Seal (text + portrait),
+  CONTACT US, Blog and Cookie Policy (still at /pages/cookie-policy). Existing sites: click "Complete ORWO
+  Distribution setup" once after updating to create them. Existing pages are never overwritten.
+
 ## 0.1.0 — 2026-10-10
 
 First release of the ORWO Distribution theme, rebuilt from the archived www.orwodistribution.com (Strikingly).

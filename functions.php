@@ -6,6 +6,7 @@ require_once __DIR__ . '/includes/layout.php';
 require_once __DIR__ . '/includes/media.php';
 require_once __DIR__ . '/includes/films.php';
 require_once __DIR__ . '/includes/blog.php';
+require_once __DIR__ . '/includes/pages.php';
 require_once __DIR__ . '/includes/setup.php';
 require_once __DIR__ . '/includes/seo.php';
 require_once __DIR__ . '/includes/contact-form.php';

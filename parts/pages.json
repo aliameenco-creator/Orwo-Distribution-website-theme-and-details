@@ -1,0 +1,74 @@
+[
+ {
+  "slug": "distribution",
+  "title": "Distribution",
+  "front": true,
+  "blocks": [
+   "<!-- wp:paragraph --><p>A boutique world sales agency with theatrical ability in select territories, including USA and UK</p><!-- /wp:paragraph -->"
+  ],
+  "seo": "home"
+ },
+ {
+  "slug": "studio",
+  "title": "Studio",
+  "blocks": [
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">\"Hollywood South\"</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>A very unique Film Studio in the heart of Louisiana, just 15 minutes from Baton Rouge airport, but in a serene and tranquil rural setting. ORWO Studios is a carefully crafted creative environment and the ideal place for film and television productions; quiet, focused and with excellent accommodation and transport links, including a private airport next door.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>ORWO Studios is constantly developing and expanding. Currently the studio boasts: 3 sound stages, 35mm lab, vfx department, product placement and branding, set design and build services, full post production (Avid DS, QTake, FCP, Nuke, Speedgrade, Resolve etc), cameras, catering, antique props/furnishings, large and varied backlot, accommodation and of course: office buildings, fishing pond, antebellum backdrops.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p><a href=\"https://www.orwo.studio\">www.orwo.studio</a></p><!-- /wp:paragraph -->"
+  ],
+  "seo": "studio"
+ },
+ {
+  "slug": "about-jake-seal",
+  "title": "About Jake Seal",
+  "blocks": [
+   "<!-- wp:paragraph --><p>Businessman, producer, director and actor Jake Seal is a well-known entrepreneur and technologist within the entertainment industry. He is the founder and owner of several companies, including Metapixel.World, Undivided and the ORWO family of companies, the latter of which comprises, among others, ORWO Distribution and ORWO Studios (best known for its involvement in films including Star Wars: Rogue One, The Maze Runner, Twilight, Dream Boy and The Magnificent Seven), and Black Hangar Studios.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>ORWO Distribution is a worldwide boutique sales agency boasting theatrical ability in territories including the US and UK. Titles that the company has distributed include 97 Minutes, All the Little Things We Kill, Blaze, Born to be Blue, Breaking the Bank, Revengers Code, Grand Isle, Jeepers Creepers: Reborn, J’Kids, Last Hour, Manipulation, Momentum, Skypaths, The Chelsea Cowboy, Two Families, The Fallow Few, Terror of the Soul, I Live Here Now and Two Families. The latter movie, directed by Romano Scavolini and starring Casper Zafer, Susie Amy and Richard Johnson, follows a young man as he struggles to escape his mafia family upbringing.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>In 2024, ORWO Distribution also distributed titles including Crooked Man and Cut, both directed by Louisa Warren, Foundations, directed by Antony Petrou, Hospitality, directed by Mike Salomon, Silent Night Deadly Night, directed by Jamie Blanks, and The Chair, directed by Maguy Cohen, as well as The Well, directed by Misko Massanyi. This last movie tells the story of an injured woman trapped in a deep well who must come face to face with a dangerous stranger to save her daughter from a harrowing experience.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Jake has produced numerous acclaimed films, including Breaking the Bank, Born to Be Blue, Jeepers Creepers 3, Jeepers Creepers: Reborn, Blaze, Grand Isle, Back Roads and Willy’s Wonderland. He has become well-regarded in the movie industry for financing, developing and producing big name film franchises that are finding it difficult to get off the ground, such as Silent Night Deadly Night and Jeepers Creepers. The latter enjoyed significant commercial success upon its release in 2001 and was followed by a sequel in 2003. Despite the success of these movies the franchise subsequently laid dormant for 15 years, although various parties attempted to resurrect it during this period. However, once Jake came on board as financier and producer of Jeepers Creepers 3, the film entered and completed production within eight months.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Jake originally hails from London but now considers himself a global citizen and lives internationally, with a favoured focus on Louisiana. He is married to Jodie Seal, a former Miss Australia, and the couple has three sons and one daughter.</p><!-- /wp:paragraph -->"
+  ],
+  "thumbnail": "25b03ebe6bc6324a",
+  "seo": "about-jake-seal"
+ },
+ {
+  "slug": "contact-us",
+  "title": "CONTACT US",
+  "blocks": [],
+  "seo": "contact"
+ },
+ {
+  "slug": "blog",
+  "title": "Blog",
+  "blocks": [],
+  "seo": "blog"
+ },
+ {
+  "slug": "cookie-policy",
+  "title": "Cookie Policy",
+  "blocks": [
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">What Are Cookies?</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>Cookies are small pieces of data (memory files) stored on your computer or device via your browser by sites you visit. As is common practice with almost all websites, this site uses cookies to improve your experience by remembering your preferences and enable other cookie-based features (e.g. analytics), either for a single visit (through a \"session cookie\") or for multiple repeat visits (using a \"persistent cookie\").</p><!-- /wp:paragraph -->",
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">Our Cookies</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>We use cookies for a number of different purposes.</p><!-- /wp:paragraph -->",
+   "<!-- wp:list --><ul class=\"wp-block-list\"><!-- wp:list-item --><li>If you submit data through a form such as those found on contact pages, comment forms, or blog subscription, cookies may be set to remember your user details for future correspondence.</li><!-- /wp:list-item --><!-- wp:list-item --><li>If you submit information through a live chat widget, cookies may be set to remember your user detail so you can continue a conversation the next time you return to the site.</li><!-- /wp:list-item --><!-- wp:list-item --><li>If you purchase items via ecommerce, cookies may be set to allow you to add products to your basket, display the correct page for the device you are using, verify your details when you make an order, and allow us to process payment for an order.</li><!-- /wp:list-item --></ul><!-- /wp:list -->",
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">Third-Party Cookies</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>In special cases, we also use cookies provided by trusted third parties like Google Analytics. Third party analytics are used to track and measure usage of this site so that we can continue to produce engaging content.</p><!-- /wp:paragraph -->",
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">Managing Cookies</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>When you first access the site, you may receive a message advising you that cookies and similar technologies are in use. By clicking \"accept all\", you signify that you understand and agree to the use of these technologies, as described in this Cookie Policy. By clicking \"settings\", you can choose to accept or reject specific cookies.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>You may withdraw consent at any time. Most browsers allow you to refuse to accept cookies. You can also remove cookies from your browser settings. Be aware that disabling cookies may affect the functionality of this and many other websites you visit. Therefore, it is recommended that you do not disable cookies.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Please see the following links for information on how to manage, block, or delete cookies for the most popular browsers:</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Microsoft Edge: <br/> <a href=\"https://support.microsoft.com/en-us/edge/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use\"> https://support.microsoft.com/en-us/edge/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use </a></p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Google Chrome: <br/> <a href=\"https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en\"> https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en </a></p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Mozilla Firefox: <br/> <a href=\"https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences\"> https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences </a></p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Apple Safari: <br/> <a href=\"https://support.apple.com/en-gb/guide/safari/sfri11471/mac\"> https://support.apple.com/en-gb/guide/safari/sfri11471/mac </a></p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>To find out more on how to manage and delete cookies, visit aboutcookies.org. For more details on your choices regarding use of your web browsing activity for interest-based advertising you may visit the following sites:</p><!-- /wp:paragraph -->",
+   "<!-- wp:list --><ul class=\"wp-block-list\"><!-- wp:list-item --><li>networkadvertising.org</li><!-- /wp:list-item --><!-- wp:list-item --><li>optout.aboutads.info</li><!-- /wp:list-item --><!-- wp:list-item --><li>youradchoices.com</li><!-- /wp:list-item --><!-- wp:list-item --><li>youronlinechoices.eu</li><!-- /wp:list-item --></ul><!-- /wp:list -->",
+   "<!-- wp:heading --><h2 class=\"wp-block-heading\">General</h2><!-- /wp:heading -->",
+   "<!-- wp:paragraph --><p>We may edit this policy from time to time. Please check this policy regularly for any changes. Our site is hosted on Strikingly Inc. They provide us with the <a href=\"https://www.strikingly.com\">best website creator</a> that allows us to <a href=\"https://www.strikingly.com\">create a website free</a>.</p><!-- /wp:paragraph -->",
+   "<!-- wp:paragraph --><p>Cookies are one way we comply with GDPR guidelines. To learn more about Strikingly, the following links may be helpful: <a href=\"https://www.youtube.com/channel/UC4I-TRQbiWfEdDvldAXg5ew\">Youtube</a> <a href=\"https://www.facebook.com/strikingly/\">Facebook</a> <a href=\"https://twitter.com/strikingly\">Twitter</a> <a href=\"https://www.sxl.cn\">SXL</a></p><!-- /wp:paragraph -->"
+  ],
+  "seo": "cookie-policy"
+ }
+]

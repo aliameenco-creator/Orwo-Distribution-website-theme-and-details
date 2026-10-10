@@ -83,6 +83,7 @@ add_action( 'admin_post_orwod_media_import', function () {
     }
     // All images are in the library: create the editable film records next (never overwrites edited films).
     orwod_films_seed();
+    orwod_pages_seed();
     wp_safe_redirect( admin_url( 'edit.php?post_type=orwod_film&orwod_media=done' ) );
     exit;
 } );

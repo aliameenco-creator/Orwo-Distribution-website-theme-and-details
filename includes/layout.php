@@ -43,8 +43,16 @@ function orwod_theme_part( $name, $return = false ) {
         $blog = orwod_has_posts() ? '<li><a href="/blog" data-nav="blog">BLOG</a></li>' : '';
         $html = str_replace( '<!--orwod:blog-->', $blog, $html );
     }
-    if ( str_contains( $html, '<!--orwod:hero-reel-->' ) ) {
-        $html = str_replace( '<!--orwod:hero-reel-->', orwod_hero_reel(), $html );
+    if ( 'home-hero' === $name && orwod_home_tagline() ) {
+        // The Distribution page's text is the tagline (animated in two lines, like the original).
+        $words = preg_split( '~\s+~', orwod_home_tagline() );
+        $half = (int) ceil( count( $words ) / 2 );
+        $lines = '<span class="line"><span>' . esc_html( implode( ' ', array_slice( $words, 0, $half ) ) ) . '</span></span> <span class="line"><span>' . esc_html( implode( ' ', array_slice( $words, $half ) ) ) . '</span></span>';
+        $html = preg_replace( '~(<p class="hero-lead reveal-lines">).*?(</p>)~s', '$1' . str_replace( '$', '\$', $lines ) . '$2', $html, 1 );
+    }
+    if ( str_contains( $html, '<!--orwod:hero-slides-->' ) ) {
+        list( $slides, $now ) = orwod_hero_slides();
+        $html = str_replace( array( '<!--orwod:hero-slides-->', '<!--orwod:hero-now-->' ), array( $slides, $now ), $html );
     }
     $html = orwod_theme_fragment( $html );
     if ( $return ) { return $html; }
@@ -132,6 +140,7 @@ function orwod_current_route() {
     if ( is_page() ) {
         $routes = orwod_routes();
         $slug = get_post_field( 'post_name', get_queried_object_id() );
+        if ( 'cookie-policy' === $slug ) { return 'cookie-policy'; }
         return $routes[ $slug ] ?? '';
     }
     return '';
@@ -144,14 +153,41 @@ function orwod_route_url( $route ) {
     return '' === $path ? home_url( '/' ) : home_url( user_trailingslashit( $path ) );
 }
 
-/** Slow drifting strip of film stills behind the homepage hero (decorative). */
-function orwod_hero_reel() {
-    $films = orwod_listed_films();
-    if ( ! $films ) { return ''; }
-    $frames = '';
-    foreach ( array_slice( $films, 0, 12 ) as $film ) {
-        $id = orwod_film_image_id( $film, 'tile' );
-        if ( $id ) { $frames .= wp_get_attachment_image( $id, 'orwod-tile', false, array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => '360px' ) ); }
+/** Films for the homepage hero: listed films with their own (unshared, large) banner still, in homepage order. */
+function orwod_hero_films( $limit = 6 ) {
+    // A stock photo used as the banner of several films is not a film still: skip banners shared between films.
+    $uses = array();
+    $films = get_posts( array( 'post_type' => ORWOD_FILM, 'post_status' => 'publish', 'numberposts' => 300, 'fields' => 'ids' ) );
+    foreach ( $films as $id ) {
+        $banner = orwod_film_image_id( $id, 'banner' );
+        if ( $banner ) { $uses[ $banner ] = ( $uses[ $banner ] ?? 0 ) + 1; }
     }
-    return $frames ? '<div class="reel-track">' . $frames . '<span class="dup">' . $frames . '</span></div>' : '';
+    $out = array();
+    foreach ( orwod_listed_films() as $film ) {
+        $id = orwod_film_image_id( $film, 'banner' );
+        $meta = $id ? wp_get_attachment_metadata( $id ) : array();
+        if ( ! $id || 1 !== ( $uses[ $id ] ?? 0 ) || (int) ( $meta['width'] ?? 0 ) < 1200 ) { continue; }
+        $out[] = array( $film, $id );
+        if ( count( $out ) >= $limit ) { break; }
+    }
+    return $out;
+}
+
+/** Hero slideshow (crossfading, slow zoom) and the "now showing" panel with thumbnails. */
+function orwod_hero_slides() {
+    $films = orwod_hero_films();
+    if ( ! $films ) { return array( '', '' ); }
+    $slides = '';
+    $thumbs = '';
+    foreach ( $films as $n => list( $film, $id ) ) {
+        $first = 0 === $n;
+        $slides .= '<div class="hero-slide' . ( $first ? ' active' : '' ) . '">' . wp_get_attachment_image( $id, 'full', false, array( 'alt' => '', 'sizes' => '100vw', 'loading' => $first ? 'eager' : 'lazy', 'fetchpriority' => $first ? 'high' : 'low', 'decoding' => 'async' ) ) . '</div>';
+        $thumb = orwod_film_image_id( $film, 'tile' );
+        $sub = orwod_film_subtitle( $film );
+        $thumbs .= '<li><a class="now-item' . ( $first ? ' active' : '' ) . '" href="' . esc_url( get_permalink( $film ) ) . '" data-slide="' . (int) $n . '">'
+            . ( $thumb ? wp_get_attachment_image( $thumb, 'thumbnail', false, array( 'alt' => '', 'loading' => 'lazy', 'class' => 'now-thumb' ) ) : '' )
+            . '<span class="now-text"><span class="now-title">' . esc_html( get_the_title( $film ) ) . '</span>' . ( $sub ? '<span class="now-sub">' . esc_html( $sub ) . '</span>' : '' ) . '</span><span class="now-bar" aria-hidden="true"></span></a></li>';
+    }
+    $now = '<div class="hero-now" data-reveal><span class="eyebrow">NOW SHOWING</span><ol class="now-list">' . $thumbs . '</ol></div>';
+    return array( $slides, $now );
 }

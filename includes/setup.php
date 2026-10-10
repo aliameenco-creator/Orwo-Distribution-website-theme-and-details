@@ -17,6 +17,8 @@ function orwod_setup_missing() {
     if ( orwod_sample_post() ) { $missing['sample'] = 'move WordPress’s unedited sample post "Hello world!" to the trash (the menu shows Blog once you publish your own posts)'; }
     $films = count( orwod_films_pending() );
     if ( $films ) { $missing['films'] = 'create the ' . $films . ' films from the original website (editable under Films)'; }
+    $pages = count( orwod_pages_pending() );
+    if ( $pages ) { $missing['pages'] = 'create the ' . $pages . ' original pages (Distribution, Studio, About Jake Seal, Contact Us, Blog, Cookie Policy) as editable Pages'; }
     return $missing;
 }
 
@@ -51,6 +53,7 @@ add_action( 'admin_post_orwod_setup', function () {
     // Images first (films use them as poster, banner and gallery); the import then creates the films.
     if ( orwod_media_pending() ) { wp_safe_redirect( orwod_media_import_url() ); exit; }
     orwod_films_seed();
+    orwod_pages_seed();
     wp_safe_redirect( admin_url( 'edit.php?post_type=' . ORWOD_FILM . '&orwod_media=done' ) );
     exit;
 } );

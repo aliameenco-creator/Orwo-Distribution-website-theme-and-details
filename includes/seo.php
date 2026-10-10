@@ -95,9 +95,9 @@ add_action( 'init', function () {
     wp_register_sitemap_provider( 'orwod', new class() extends WP_Sitemaps_Provider {
         public function __construct() { $this->name = 'orwod'; $this->object_type = 'orwod'; }
         public function get_url_list( $page_num, $object_subtype = '' ) {
-            $urls = array( array( 'loc' => home_url( '/' ) ) );
+            $urls = 'page' === get_option( 'show_on_front' ) && get_option( 'page_on_front' ) ? array() : array( array( 'loc' => home_url( '/' ) ) );
             foreach ( orwod_routes() as $path => $route ) {
-                if ( 'search' === $route || get_page_by_path( $path ) ) { continue; }
+                if ( 'search' === $route || get_page_by_path( basename( $path ) ) ) { continue; }
                 $urls[] = array( 'loc' => orwod_route_url( $route ) );
             }
             return $urls;
