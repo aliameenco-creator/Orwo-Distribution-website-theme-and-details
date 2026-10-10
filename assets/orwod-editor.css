@@ -1,0 +1,5 @@
+/* Block editor: film text in the site's fonts, credits and links styled like the front end. */
+.editor-styles-wrapper { font-family: 'Source Sans Pro', Arial, sans-serif; font-size: 18px; line-height: 1.65; }
+.editor-styles-wrapper .editor-post-title, .editor-styles-wrapper .wp-block-post-title { font-family: Cardo, Georgia, serif; text-transform: uppercase; }
+.editor-styles-wrapper .film-credit, .editor-styles-wrapper .film-links { border-top: 1px solid #ddd; padding-top: 10px; }
+.editor-styles-wrapper .film-credit strong, .editor-styles-wrapper .film-links strong { font-family: Oswald, 'Arial Narrow', sans-serif; letter-spacing: .15em; text-transform: uppercase; color: #000066; font-weight: 500; }

@@ -1,0 +1,31 @@
+{
+ "site": "ORWO Distribution | Boutique world sales agency",
+ "home": {
+  "title": "ORWO Distribution | Boutique world sales agency",
+  "description": "A boutique world sales agency with theatrical ability in select territories, including USA and UK."
+ },
+ "studio": {
+  "title": "STUDIO - ORWO Distribution | Boutique world sales agency",
+  "description": ""
+ },
+ "about-jake-seal": {
+  "title": "About Jake Seal",
+  "description": "Businessman, producer, director and actor Jake Seal is a well-known entrepreneur and technologist within the entertainment industry. "
+ },
+ "contact": {
+  "title": "CONTACT US - ORWO Distribution | Boutique world sales agency",
+  "description": ""
+ },
+ "blog": {
+  "title": "Blog - ORWO Distribution | Boutique world sales agency",
+  "description": ""
+ },
+ "search": {
+  "title": "ORWO Distribution | Boutique world sales agency",
+  "description": "A boutique world sales agency with theatrical ability in select territories, including USA and UK."
+ },
+ "cookie-policy": {
+  "title": "Cookie Policy - GDPR - ORWO Distribution | Boutique world sales agency",
+  "description": "Learn about our site's cookie policy, why we use cookies, and how to manage and delete cookies."
+ }
+}

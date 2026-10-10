@@ -1,0 +1,29 @@
+{
+ "title": "CONTACT US",
+ "submit": "Submit",
+ "thanks": "Thanks for your submission!",
+ "fields": [
+  {
+   "key": "name",
+   "label": "Name",
+   "type": "text",
+   "required": true,
+   "max": 500
+  },
+  {
+   "key": "email",
+   "label": "Email",
+   "type": "email",
+   "required": true,
+   "max": 200
+  },
+  {
+   "key": "message",
+   "label": "Message",
+   "type": "textarea",
+   "required": true,
+   "max": 5000
+  }
+ ],
+ "source": "Strikingly EmailForm on https://www.orwodistribution.com/contact-us (archived)"
+}
