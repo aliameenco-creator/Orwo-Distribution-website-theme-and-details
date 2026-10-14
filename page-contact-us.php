@@ -21,7 +21,6 @@ $orwod_map = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( 
             <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5h18v13H3zm1.6 1.4L12 12.6l7.4-5.7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Email</dt><dd><a href="mailto:<?php echo esc_attr( $orwod_details['email'] ); ?>"><?php echo esc_html( $orwod_details['email'] ); ?></a></dd></div>
             <?php if ( $orwod_details['phone'] ) : ?><div><dt>Phone</dt><dd><a href="tel:<?php echo esc_attr( preg_replace( '~[^\d+]~', '', $orwod_details['phone'] ) ); ?>"><?php echo esc_html( $orwod_details['phone'] ); ?></a></dd></div><?php endif; ?>
         </dl>
-        <a class="text-link" href="<?php echo esc_url( home_url( user_trailingslashit( 'studio' ) ) ); ?>">ORWO STUDIOS ↗</a>
     </div>
     <div class="contact-form-card" data-reveal><?php orwod_contact_form(); ?></div>
 </div></section>

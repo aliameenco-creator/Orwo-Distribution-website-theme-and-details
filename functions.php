@@ -5,6 +5,7 @@ require_once __DIR__ . '/includes/github-updater.php';
 require_once __DIR__ . '/includes/layout.php';
 require_once __DIR__ . '/includes/media.php';
 require_once __DIR__ . '/includes/films.php';
+require_once __DIR__ . '/includes/catalogue.php';
 require_once __DIR__ . '/includes/blog.php';
 require_once __DIR__ . '/includes/pages.php';
 require_once __DIR__ . '/includes/setup.php';

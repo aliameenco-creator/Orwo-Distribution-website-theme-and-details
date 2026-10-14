@@ -146,6 +146,41 @@
     if (links.length < 2) box.querySelectorAll('.lb-prev, .lb-next').forEach((b) => { b.hidden = true; });
   }
 
+  // Trailers: a poster, tile or "now showing" title with a trailer plays it in a pop-up (the link itself still goes to
+  // the film page, so it works without JavaScript and with ctrl/cmd-click). Closing stops the video.
+  if (d.querySelector('[data-trailer]') && typeof HTMLDialogElement === 'function') {
+    const box = d.createElement('dialog');
+    box.className = 'trailer-box';
+    box.setAttribute('aria-label', 'Trailer');
+    box.innerHTML = '<div class="trailer-inner"><div class="trailer-head"><span class="trailer-title"></span><a class="text-link trailer-page" href="#">VIEW TITLE ↗</a><button type="button" class="trailer-close" aria-label="Close trailer">×</button></div><div class="video-frame"></div></div>';
+    d.body.appendChild(box);
+    const frame = box.querySelector('.video-frame');
+    const page = box.querySelector('.trailer-page');
+    const stop = () => { frame.innerHTML = ''; };
+    box.addEventListener('close', stop);
+    box.querySelector('.trailer-close').addEventListener('click', () => box.close());
+    box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+    d.addEventListener('click', (e) => {
+      const link = e.target.closest('[data-trailer]');
+      if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const iframe = d.createElement('iframe');
+      iframe.src = link.dataset.trailer + (link.dataset.trailer.includes('?') ? '&' : '?') + 'autoplay=1';
+      iframe.title = (link.dataset.trailerTitle || 'Film') + ' – trailer';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      stop();
+      frame.appendChild(iframe);
+      box.querySelector('.trailer-title').textContent = link.dataset.trailerTitle || '';
+      const onFilmPage = link.closest('.film-hero');
+      page.hidden = !!onFilmPage;
+      page.href = onFilmPage ? '#' : link.href;
+      box.showModal();
+      box.querySelector('.trailer-close').focus();
+    });
+  }
+
   // Phones: filmmaker quotes as a swipe carousel with dots and a gentle auto-advance (stops once touched).
   d.querySelectorAll('[data-carousel]').forEach((track) => {
     const dots = [...(track.parentElement.querySelector('[data-dots]') || d.createElement('div')).children];

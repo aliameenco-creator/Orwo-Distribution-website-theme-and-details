@@ -16,7 +16,7 @@ function orwod_setup_missing() {
     if ( orwod_media_pending() ) { $missing['media'] = 'add the website images to the Media Library with descriptive file names and alt text (SEO)'; }
     if ( orwod_sample_post() ) { $missing['sample'] = 'move WordPress’s unedited sample post "Hello world!" to the trash (the menu shows Blog once you publish your own posts)'; }
     $films = count( orwod_films_pending() );
-    if ( $films ) { $missing['films'] = 'create the ' . $films . ' films from the original website (editable under Films)'; }
+    if ( $films ) { $missing['films'] = 'create the ' . $films . ' missing films (editable under Films)'; }
     $pages = count( orwod_pages_pending() );
     if ( $pages ) { $missing['pages'] = 'create the ' . $pages . ' original pages (Distribution, Studio, About Jake Seal, Contact Us, Blog, Cookie Policy) as editable Pages'; }
     return $missing;

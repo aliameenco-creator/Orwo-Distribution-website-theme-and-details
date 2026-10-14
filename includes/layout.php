@@ -28,7 +28,7 @@ function orwod_theme_fragment( $html ) {
 
 /** Path of a generated part. Only fixed names are accepted, never user-controlled paths. */
 function orwod_part_file( $name ) {
-    if ( ! preg_match( '~^(?:header|footer|cta|home-hero|home-studio|pages/[a-z0-9-]+)$~D', $name ) ) { return ''; }
+    if ( ! preg_match( '~^(?:header|footer|cta|home-hero|pages/[a-z0-9-]+)$~D', $name ) ) { return ''; }
     $file = get_theme_file_path( 'parts/' . $name . '.html' );
     return is_readable( $file ) ? $file : '';
 }
@@ -173,7 +173,7 @@ function orwod_hero_films( $limit = 6 ) {
     return $out;
 }
 
-/** Hero slideshow (crossfading, slow zoom) and the "now showing" panel with thumbnails. */
+/** Hero slideshow (crossfading, slow zoom) and the "now showing" panel with thumbnails (a click plays the trailer when the film has one). */
 function orwod_hero_slides() {
     $films = orwod_hero_films();
     if ( ! $films ) { return array( '', '' ); }
@@ -184,7 +184,7 @@ function orwod_hero_slides() {
         $slides .= '<div class="hero-slide' . ( $first ? ' active' : '' ) . '">' . wp_get_attachment_image( $id, 'full', false, array( 'alt' => '', 'sizes' => '100vw', 'loading' => $first ? 'eager' : 'lazy', 'fetchpriority' => $first ? 'high' : 'low', 'decoding' => 'async' ) ) . '</div>';
         $thumb = orwod_film_image_id( $film, 'tile' );
         $sub = orwod_film_subtitle( $film );
-        $thumbs .= '<li><a class="now-item' . ( $first ? ' active' : '' ) . '" href="' . esc_url( get_permalink( $film ) ) . '" data-slide="' . (int) $n . '">'
+        $thumbs .= '<li><a class="now-item' . ( $first ? ' active' : '' ) . '" href="' . esc_url( get_permalink( $film ) ) . '" data-slide="' . (int) $n . '"' . orwod_trailer_attrs( $film ) . '>'
             . ( $thumb ? wp_get_attachment_image( $thumb, 'thumbnail', false, array( 'alt' => '', 'loading' => 'lazy', 'class' => 'now-thumb' ) ) : '' )
             . '<span class="now-text"><span class="now-title">' . esc_html( get_the_title( $film ) ) . '</span>' . ( $sub ? '<span class="now-sub">' . esc_html( $sub ) . '</span>' : '' ) . '</span><span class="now-bar" aria-hidden="true"></span></a></li>';
     }

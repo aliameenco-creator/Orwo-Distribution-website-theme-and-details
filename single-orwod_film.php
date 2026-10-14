@@ -11,6 +11,9 @@ while ( have_posts() ) :
     $orwod_display = $orwod_display ? $orwod_display : get_the_title();
     $orwod_sub = orwod_film_subtitle( $orwod_film );
     $orwod_email = orwod_film_contact( $orwod_film );
+    $orwod_trailer = orwod_film_trailer( $orwod_film );
+    $orwod_trailer_link = (string) get_post_meta( $orwod_film->ID, '_orwod_trailer', true );
+    $orwod_laurels = orwod_laurels_html( $orwod_film );
     ?>
 <section class="film-hero">
     <div class="film-hero-media" aria-hidden="true"><?php echo $orwod_banner ? wp_get_attachment_image( $orwod_banner, 'full', false, array( 'alt' => '', 'fetchpriority' => 'high', 'loading' => 'eager', 'sizes' => '100vw', 'class' => 'film-banner' ) ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
@@ -20,6 +23,10 @@ while ( have_posts() ) :
         <h1 class="film-title reveal-title"><?php the_title(); ?></h1>
         <?php if ( $orwod_year || $orwod_sub ) : ?>
         <p class="film-meta"><?php echo $orwod_year ? '<span class="chip">' . esc_html( $orwod_year ) . '</span>' : ''; ?><?php echo $orwod_sub ? '<span class="film-sub">' . esc_html( $orwod_sub ) . '</span>' : ''; ?></p>
+        <?php endif; ?>
+        <?php echo $orwod_laurels; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in builder. ?>
+        <?php if ( $orwod_trailer ) : ?>
+        <div class="actions film-actions"><a class="button light" href="<?php echo esc_url( $orwod_trailer_link ); ?>"<?php echo orwod_trailer_attrs( $orwod_film ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>▶ WATCH TRAILER</a></div>
         <?php endif; ?>
     </div>
 </section>
@@ -34,6 +41,16 @@ while ( have_posts() ) :
         <div class="actions"><a class="button" href="<?php echo esc_url( home_url( user_trailingslashit( 'contact-us' ) ) ); ?>">CONTACT US ↗</a></div></div>
     </div>
 </div></section>
+    <?php if ( $orwod_trailer ) : ?>
+<section class="section film-trailer" id="trailer"><div class="wrap">
+    <div class="section-head" data-reveal><h2 class="display">Trailer</h2></div>
+    <?php // A still with a play button: YouTube/Vimeo load only when the visitor plays the trailer (faster page, no tracking before). ?>
+    <a class="video-frame video-facade" href="<?php echo esc_url( $orwod_trailer_link ); ?>"<?php echo orwod_trailer_attrs( $orwod_film ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="<?php echo esc_attr( 'Play the ' . get_the_title() . ' trailer' ); ?>" data-reveal>
+        <?php echo $orwod_banner ? wp_get_attachment_image( $orwod_banner, 'large', false, array( 'alt' => '', 'loading' => 'lazy', 'sizes' => '(max-width: 1180px) 100vw, 1180px' ) ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        <span class="tile-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+    </a>
+</div></section>
+    <?php endif; ?>
     <?php
     list( $orwod_prev, $orwod_next ) = orwod_adjacent_films( $orwod_film );
     if ( $orwod_prev && $orwod_next ) :

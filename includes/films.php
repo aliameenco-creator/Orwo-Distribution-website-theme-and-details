@@ -5,7 +5,8 @@
  * from parts/films.json (archived site content) and never overwrites a film that already exists.
  *
  * Per film: title, content (synopsis, credits, IMDB link, gallery: block editor), featured image (poster),
- * and "Film details" (year, homepage group/order, homepage subtitle, banner and homepage tile images, contact email).
+ * and "Film details" (year, homepage group/order, homepage subtitle, trailer link, laurels, banner and homepage tile
+ * images, contact email). Films with a trailer open it in a pop-up when their poster/tile is clicked.
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
@@ -15,7 +16,7 @@ function orwod_film_groups() {
     $titles = orwod_data( 'home' )['titles'] ?? array();
     return array(
         'library' => $titles['library'] ?? 'Library titles',
-        '2024'    => $titles['2024'] ?? 'Selected 2024 titles',
+        '2026'    => $titles['2026'] ?? '2026 titles',
         ''        => 'Not shown on the homepage',
     );
 }
@@ -38,7 +39,7 @@ add_action( 'init', function () {
         'rewrite'       => false,
         'query_var'     => ORWOD_FILM,
     ) );
-    foreach ( array( '_orwod_year', '_orwod_group', '_orwod_subtitle', '_orwod_contact', '_orwod_display_title' ) as $key ) {
+    foreach ( array( '_orwod_year', '_orwod_group', '_orwod_subtitle', '_orwod_contact', '_orwod_display_title', '_orwod_trailer', '_orwod_laurels' ) as $key ) {
         register_post_meta( ORWOD_FILM, $key, array( 'type' => 'string', 'single' => true, 'show_in_rest' => false, 'auth_callback' => function () { return current_user_can( 'edit_posts' ); } ) );
     }
     foreach ( array( '_orwod_banner', '_orwod_tile' ) as $key ) {
@@ -89,7 +90,7 @@ add_filter( 'wp_unique_post_slug_is_bad_flat_slug', function ( $bad, $slug, $pos
 
 // ----------------------------------------------------------------- helpers ---
 
-/** Films shown on the homepage, in the original order (group "library" first, then "2024"). */
+/** Films shown on the homepage, in homepage order (group "library" first, then "2026"). */
 function orwod_listed_films( $group = null ) {
     static $cache = array();
     $key = null === $group ? '*' : $group;
@@ -136,13 +137,19 @@ function orwod_film_contact( $film ) {
     return is_email( $email ) ? $email : orwod_contact_details()['email'];
 }
 
-/** Homepage/related title tile. */
+/** Homepage/related title tile. With a trailer, a click opens it in a pop-up (the link still leads to the film page). */
 function orwod_film_tile( $film, $heading = 'h3', $sizes = '(max-width: 700px) 50vw, (max-width: 1100px) 50vw, 33vw' ) {
     $film = get_post( $film );
     $id = orwod_film_image_id( $film, 'tile' );
+    $title = get_the_title( $film );
     $img = $id ? wp_get_attachment_image( $id, 'orwod-tile', false, array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => $sizes ) ) : '<span class="tile-blank" aria-hidden="true"></span>';
     $sub = orwod_film_subtitle( $film );
-    return '<a class="title-tile" href="' . esc_url( get_permalink( $film ) ) . '" data-reveal><span class="tile-media">' . $img . '</span><span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( get_the_title( $film ) ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">VIEW TITLE ↗</span></span></a>';
+    $trailer = orwod_film_trailer( $film );
+    $badge = orwod_laurel_badge( $film );
+    return '<a class="title-tile" href="' . esc_url( get_permalink( $film ) ) . '"' . orwod_trailer_attrs( $film ) . ' data-reveal><span class="tile-media">' . $img . '</span>'
+        . ( $badge ? '<span class="tile-laurel">' . $badge . '</span>' : '' )
+        . ( $trailer ? '<span class="tile-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>' : '' )
+        . '<span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( $title ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">' . ( $trailer ? 'WATCH TRAILER ▶' : 'VIEW TITLE ↗' ) . '</span></span></a>';
 }
 
 /** Previous/next film in homepage order (unlisted films use all published films in title order). */
@@ -228,7 +235,7 @@ function orwod_films_seed() {
     foreach ( orwod_films_pending() as $film ) {
         $id = wp_insert_post( array(
             'post_type'    => ORWOD_FILM,
-            'post_status'  => 'publish',
+            'post_status'  => 'draft' === ( $film['status'] ?? '' ) ? 'draft' : 'publish',
             'post_title'   => $film['title'],
             'post_name'    => $film['key'],
             'menu_order'   => (int) $film['order'],
@@ -240,6 +247,9 @@ function orwod_films_seed() {
         update_post_meta( $id, '_orwod_group', $film['group'] );
         update_post_meta( $id, '_orwod_subtitle', $film['subtitle'] );
         update_post_meta( $id, '_orwod_contact', $film['contact'] );
+        if ( ! empty( $film['trailer'] ) ) { update_post_meta( $id, '_orwod_trailer', esc_url_raw( $film['trailer'] ) ); }
+        if ( ! empty( $film['laurels'] ) ) { update_post_meta( $id, '_orwod_laurels', implode( "
+", $film['laurels'] ) ); }
         if ( $film['display_title'] !== $film['title'] ) { update_post_meta( $id, '_orwod_display_title', $film['display_title'] ); }
         if ( ! empty( $media[ $film['poster'] ] ) ) { set_post_thumbnail( $id, $media[ $film['poster'] ] ); }
         if ( ! empty( $media[ $film['banner'] ] ) ) { update_post_meta( $id, '_orwod_banner', (int) $media[ $film['banner'] ] ); }
@@ -279,6 +289,8 @@ function orwod_film_details_box( $post ) {
     }
     echo '</select><span class="description">Order: Page Attributes → Order.</span></p>';
     echo '<p><label for="orwod_subtitle"><strong>Homepage tile line</strong></label><br><input type="text" id="orwod_subtitle" name="orwod_subtitle" value="' . esc_attr( $subtitle ) . '" class="widefat" placeholder="Director …"></p>';
+    echo '<p><label for="orwod_trailer"><strong>Trailer link</strong></label><br><input type="url" id="orwod_trailer" name="orwod_trailer" value="' . esc_attr( (string) get_post_meta( $post->ID, '_orwod_trailer', true ) ) . '" class="widefat" placeholder="https://www.youtube.com/watch?v=…"><span class="description">YouTube or Vimeo. Clicking the poster then plays it in a pop-up; it is also shown on the film page.</span></p>';
+    echo '<p><label for="orwod_laurels"><strong>Laurels / awards</strong></label><br><textarea id="orwod_laurels" name="orwod_laurels" class="widefat" rows="4" placeholder="Winner: Best Actor | Boston Film Festival 2025">' . esc_textarea( (string) get_post_meta( $post->ID, '_orwod_laurels', true ) ) . '</textarea><span class="description">One per line: award | festival.</span></p>';
     echo '<p><label for="orwod_contact"><strong>Contact email</strong></label><br><input type="email" id="orwod_contact" name="orwod_contact" value="' . esc_attr( $contact ) . '" class="widefat" placeholder="' . esc_attr( orwod_contact_details()['email'] ) . '"></p>';
     foreach ( array( '_orwod_banner' => 'Banner image (page header)', '_orwod_tile' => 'Homepage tile image (optional)' ) as $key => $label ) {
         $id = (int) get_post_meta( $post->ID, $key, true );
@@ -292,11 +304,15 @@ function orwod_film_details_box( $post ) {
 add_action( 'save_post_' . ORWOD_FILM, function ( $post_id ) {
     if ( ! isset( $_POST['orwod_film_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['orwod_film_nonce'] ) ), 'orwod_film_details' ) ) { return; }
     if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! current_user_can( 'edit_post', $post_id ) ) { return; }
+    // Only the film being edited (other films updated during this request, e.g. by the catalogue update, keep their details).
+    if ( absint( $_POST['post_ID'] ?? 0 ) !== (int) $post_id ) { return; }
     update_post_meta( $post_id, '_orwod_year', sanitize_text_field( wp_unslash( $_POST['orwod_year'] ?? '' ) ) );
     $group = sanitize_text_field( wp_unslash( $_POST['orwod_group'] ?? '' ) );
     update_post_meta( $post_id, '_orwod_group', array_key_exists( $group, orwod_film_groups() ) ? $group : '' );
     update_post_meta( $post_id, '_orwod_subtitle', sanitize_text_field( wp_unslash( $_POST['orwod_subtitle'] ?? '' ) ) );
     update_post_meta( $post_id, '_orwod_contact', sanitize_email( wp_unslash( $_POST['orwod_contact'] ?? '' ) ) );
+    update_post_meta( $post_id, '_orwod_trailer', esc_url_raw( trim( wp_unslash( $_POST['orwod_trailer'] ?? '' ) ) ) );
+    update_post_meta( $post_id, '_orwod_laurels', sanitize_textarea_field( wp_unslash( $_POST['orwod_laurels'] ?? '' ) ) );
     foreach ( array( 'orwod_banner', 'orwod_tile' ) as $field ) {
         $id = absint( $_POST[ $field ] ?? 0 );
         if ( $id && wp_attachment_is_image( $id ) ) { update_post_meta( $post_id, '_' . $field, $id ); }

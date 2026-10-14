@@ -10,7 +10,7 @@ After activating: click "Complete ORWO Distribution setup" in wp-admin. It turns
 sets the original site title, adds the website images to the Media Library (descriptive names and alt
 text) and creates the films under Films. Running it again never overwrites edits.
 
-Original addresses: / (Distribution), every film at the root (/blaze, /77 ...), /studio, /about-jake-seal,
+Original addresses: / (Distribution), every film at the root (/blaze, /77 ...), /studio and /about-jake-seal (SEO only, not linked),
 /contact-us (contact form; /contact redirects here), /blog, /search, /pages/cookie-policy.
 
 Contact form: submissions are saved under Enquiries and emailed to hello@orwodistribution.com
