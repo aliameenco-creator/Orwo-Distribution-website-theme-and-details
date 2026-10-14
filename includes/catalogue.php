@@ -12,7 +12,7 @@ const ORWOD_CATALOGUE = 3;
 function orwod_trailer_embed( $url ) {
     $url = trim( (string) $url );
     if ( preg_match( '~(?:youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|live/)|youtu\.be/)([A-Za-z0-9_-]{11})~', $url, $m ) ) {
-        return 'https://www.youtube-nocookie.com/embed/' . $m[1] . '?rel=0&modestbranding=1&playsinline=1';
+        return 'https://www.youtube.com/embed/' . $m[1] . '?rel=0&modestbranding=1&playsinline=1';
     }
     if ( preg_match( '~vimeo\.com/(?:video/)?(\d+)~', $url, $m ) ) {
         return 'https://player.vimeo.com/video/' . $m[1] . '?dnt=1';
@@ -24,10 +24,13 @@ function orwod_film_trailer( $film ) {
     return orwod_trailer_embed( get_post_meta( get_post( $film )->ID, '_orwod_trailer', true ) );
 }
 
-/** Attributes that make a link open the film's trailer pop-up (empty without a trailer). */
+/** Attributes that make a link open the film's trailer pop-up (empty without a trailer). The still shows while the player loads. */
 function orwod_trailer_attrs( $film ) {
     $embed = orwod_film_trailer( $film );
-    return $embed ? ' data-trailer="' . esc_url( $embed ) . '" data-trailer-title="' . esc_attr( get_the_title( $film ) ) . '"' : '';
+    if ( ! $embed ) { return ''; }
+    $still = orwod_film_image_id( $film, 'banner' );
+    $still = $still ? wp_get_attachment_image_url( $still, 'large' ) : '';
+    return ' data-trailer="' . esc_url( $embed ) . '" data-trailer-title="' . esc_attr( get_the_title( $film ) ) . '"' . ( $still ? ' data-trailer-still="' . esc_url( $still ) . '"' : '' );
 }
 
 /** Laurels: one per line, "award | festival" (or just the festival). */

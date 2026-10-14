@@ -32,7 +32,11 @@ while ( have_posts() ) :
 </section>
 <section class="section film-body"><div class="wrap film-grid<?php echo $orwod_poster ? '' : ' no-poster'; ?>">
     <?php if ( $orwod_poster ) : ?>
+    <?php if ( $orwod_trailer ) : // The poster plays the trailer (ORWO's request); without a trailer it opens full size. ?>
+    <figure class="film-poster has-trailer" data-reveal><a href="<?php echo esc_url( $orwod_trailer_link ); ?>"<?php echo orwod_trailer_attrs( $orwod_film ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> aria-label="<?php echo esc_attr( 'Play the ' . get_the_title() . ' trailer' ); ?>"><?php echo wp_get_attachment_image( $orwod_poster, 'large', false, array( 'sizes' => '(max-width: 800px) 70vw, 420px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span class="tile-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span></a></figure>
+    <?php else : ?>
     <figure class="film-poster" data-reveal><a href="<?php echo esc_url( wp_get_attachment_image_url( $orwod_poster, 'full' ) ); ?>" data-lightbox><?php echo wp_get_attachment_image( $orwod_poster, 'large', false, array( 'sizes' => '(max-width: 800px) 70vw, 420px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></figure>
+    <?php endif; ?>
     <?php endif; ?>
     <div class="film-text">
         <h2 class="film-heading" data-reveal><?php echo esc_html( $orwod_display ); ?><?php echo $orwod_year ? ' <span>(' . esc_html( $orwod_year ) . ')</span>' : ''; ?></h2>

@@ -39,6 +39,8 @@ function orwod_theme_part( $name, $return = false ) {
     $html = (string) file_get_contents( $file );
     // Copyright year is always the current year (never a stale year copied from the old site).
     $html = str_replace( '<!--orwod:year-->', esc_html( wp_date( 'Y' ) ), $html );
+    // Menu label of the second homepage group follows its heading (editable under Films → Homepage titles).
+    $html = str_replace( '<!--orwod:nav-2026-->', esc_html( orwod_film_groups()['2026'] ), $html );
     if ( str_contains( $html, '<!--orwod:blog-->' ) ) {
         $blog = orwod_has_posts() ? '<li><a href="/blog" data-nav="blog">BLOG</a></li>' : '';
         $html = str_replace( '<!--orwod:blog-->', $blog, $html );

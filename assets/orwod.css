@@ -453,3 +453,13 @@ p { margin: 0 0 1em; }
   .trailer-head { gap: 10px; }
   .trailer-page { display: none; }
 }
+.trailer-box .video-frame { background: #000 center / cover no-repeat; }
+.trailer-box .video-frame iframe { transition: opacity .35s var(--ease); }
+.trailer-box .video-frame.loading iframe { opacity: 0; }
+.trailer-box .video-frame.loading::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, .35); }
+.trailer-box .video-frame.loading::after { content: ""; position: absolute; top: 50%; left: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, .25); border-top-color: var(--white); animation: trailer-spin .8s linear infinite; }
+@keyframes trailer-spin { to { transform: rotate(360deg); } }
+.film-poster.has-trailer a { position: relative; display: block; }
+.film-poster.has-trailer .tile-play { width: 76px; height: 76px; margin: -38px 0 0 -38px; }
+.film-poster.has-trailer .tile-play svg { width: 30px; height: 30px; }
+.film-poster.has-trailer a:hover .tile-play, .film-poster.has-trailer a:focus-visible .tile-play { transform: scale(1.1); background: var(--white); color: var(--charcoal); }

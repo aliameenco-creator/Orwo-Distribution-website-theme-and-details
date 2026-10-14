@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.2 — 2026-10-14
+
+- Trailers start faster: the site connects to YouTube in the background after the page loads (and again on hover),
+  and the pop-up shows the film still with a spinner until the player is ready instead of a black box.
+- Library and 2026 tiles open their film page again. The trailer pop-up plays from the hero's "Now showing" titles,
+  and on a film page from the poster, the "Watch trailer" button and the trailer still.
+- New screen Films → Homepage titles: drag films to reorder them or move them between Library titles, the second
+  section and "Not on the homepage"; rename both section headings (the second one is also the menu label). Moving a
+  draft into a section publishes it. New films (Films → Add film) go to the end of Library titles by default.
+
 ## 0.3.1 — 2026-10-14
 
 - Colours: the bright navy blue is replaced by a dark charcoal grey (header, hero and tile overlays, contact band,

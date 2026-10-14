@@ -156,7 +156,19 @@
     d.body.appendChild(box);
     const frame = box.querySelector('.video-frame');
     const page = box.querySelector('.trailer-page');
-    const stop = () => { frame.innerHTML = ''; };
+    const stop = () => { frame.innerHTML = ''; frame.classList.remove('loading'); };
+    // Warm up the video player's connections early (after the page has loaded, and again on hover/focus/touch) so a
+    // click starts the trailer quickly.
+    let warmed = false;
+    const warm = () => {
+      if (warmed) return;
+      warmed = true;
+      const hosts = new Set(['https://www.youtube.com', 'https://i.ytimg.com', 'https://www.google.com', 'https://static.doubleclick.net', 'https://jnn-pa.googleapis.com']);
+      d.querySelectorAll('[data-trailer]').forEach((a) => { try { hosts.add(new URL(a.dataset.trailer).origin); } catch (err) { /* ignore */ } });
+      hosts.forEach((href) => { const l = d.createElement('link'); l.rel = 'preconnect'; l.href = href; l.crossOrigin = ''; d.head.appendChild(l); });
+    };
+    if (d.readyState === 'complete') window.setTimeout(warm, 1500); else window.addEventListener('load', () => window.setTimeout(warm, 1500));
+    ['pointerover', 'focusin', 'touchstart'].forEach((ev) => d.addEventListener(ev, (e) => { if (e.target.closest && e.target.closest('[data-trailer]')) warm(); }, { passive: true }));
     box.addEventListener('close', stop);
     box.querySelector('.trailer-close').addEventListener('click', () => box.close());
     box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
@@ -171,6 +183,11 @@
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       stop();
+      warm();
+      // The film still and a spinner show at once; the player fades in when it has loaded.
+      frame.style.backgroundImage = link.dataset.trailerStill ? 'url("' + link.dataset.trailerStill.replace(/"/g, '%22') + '")' : '';
+      frame.classList.add('loading');
+      iframe.addEventListener('load', () => window.setTimeout(() => frame.classList.remove('loading'), 250));
       frame.appendChild(iframe);
       box.querySelector('.trailer-title').textContent = link.dataset.trailerTitle || '';
       const onFilmPage = link.closest('.film-hero');

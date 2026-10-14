@@ -13,7 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 const ORWOD_FILM = 'orwod_film';
 
 function orwod_film_groups() {
-    $titles = orwod_data( 'home' )['titles'] ?? array();
+    // Headings edited under Films → Homepage titles win over the theme defaults.
+    // Union, not array_merge(): "2026" is a numeric key that array_merge() would renumber.
+    $titles = array_filter( (array) get_option( 'orwod_group_titles', array() ), 'strlen' ) + ( orwod_data( 'home' )['titles'] ?? array() );
     return array(
         'library' => $titles['library'] ?? 'Library titles',
         '2026'    => $titles['2026'] ?? '2026 titles',
@@ -137,19 +139,17 @@ function orwod_film_contact( $film ) {
     return is_email( $email ) ? $email : orwod_contact_details()['email'];
 }
 
-/** Homepage/related title tile. With a trailer, a click opens it in a pop-up (the link still leads to the film page). */
+/** Homepage/related title tile: opens the film page (where the poster and "Watch trailer" play the trailer). */
 function orwod_film_tile( $film, $heading = 'h3', $sizes = '(max-width: 700px) 50vw, (max-width: 1100px) 50vw, 33vw' ) {
     $film = get_post( $film );
     $id = orwod_film_image_id( $film, 'tile' );
     $title = get_the_title( $film );
     $img = $id ? wp_get_attachment_image( $id, 'orwod-tile', false, array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => $sizes ) ) : '<span class="tile-blank" aria-hidden="true"></span>';
     $sub = orwod_film_subtitle( $film );
-    $trailer = orwod_film_trailer( $film );
     $badge = orwod_laurel_badge( $film );
-    return '<a class="title-tile" href="' . esc_url( get_permalink( $film ) ) . '"' . orwod_trailer_attrs( $film ) . ' data-reveal><span class="tile-media">' . $img . '</span>'
+    return '<a class="title-tile" href="' . esc_url( get_permalink( $film ) ) . '" data-reveal><span class="tile-media">' . $img . '</span>'
         . ( $badge ? '<span class="tile-laurel">' . $badge . '</span>' : '' )
-        . ( $trailer ? '<span class="tile-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>' : '' )
-        . '<span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( $title ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">' . ( $trailer ? 'WATCH TRAILER ▶' : 'VIEW TITLE ↗' ) . '</span></span></a>';
+        . '<span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( $title ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">VIEW TITLE ↗</span></span></a>';
 }
 
 /** Previous/next film in homepage order (unlisted films use all published films in title order). */
@@ -279,7 +279,7 @@ add_action( 'add_meta_boxes_' . ORWOD_FILM, function () {
 function orwod_film_details_box( $post ) {
     wp_nonce_field( 'orwod_film_details', 'orwod_film_nonce' );
     $year = (string) get_post_meta( $post->ID, '_orwod_year', true );
-    $group = (string) get_post_meta( $post->ID, '_orwod_group', true );
+    $group = 'auto-draft' === $post->post_status ? 'library' : (string) get_post_meta( $post->ID, '_orwod_group', true );
     $subtitle = (string) get_post_meta( $post->ID, '_orwod_subtitle', true );
     $contact = (string) get_post_meta( $post->ID, '_orwod_contact', true );
     echo '<p><label for="orwod_year"><strong>Year</strong></label><br><input type="text" id="orwod_year" name="orwod_year" value="' . esc_attr( $year ) . '" class="widefat" inputmode="numeric" maxlength="12"></p>';
@@ -287,7 +287,7 @@ function orwod_film_details_box( $post ) {
     foreach ( orwod_film_groups() as $value => $label ) {
         echo '<option value="' . esc_attr( $value ) . '"' . selected( $group, $value, false ) . '>' . esc_html( $label ) . '</option>';
     }
-    echo '</select><span class="description">Order: Page Attributes → Order.</span></p>';
+    echo '</select><span class="description">Reorder or move films by dragging them under <a href="' . esc_url( admin_url( 'edit.php?post_type=' . ORWOD_FILM . '&page=orwod-homepage' ) ) . '">Films → Homepage titles</a>.</span></p>';
     echo '<p><label for="orwod_subtitle"><strong>Homepage tile line</strong></label><br><input type="text" id="orwod_subtitle" name="orwod_subtitle" value="' . esc_attr( $subtitle ) . '" class="widefat" placeholder="Director …"></p>';
     echo '<p><label for="orwod_trailer"><strong>Trailer link</strong></label><br><input type="url" id="orwod_trailer" name="orwod_trailer" value="' . esc_attr( (string) get_post_meta( $post->ID, '_orwod_trailer', true ) ) . '" class="widefat" placeholder="https://www.youtube.com/watch?v=…"><span class="description">YouTube or Vimeo. Clicking the poster then plays it in a pop-up; it is also shown on the film page.</span></p>';
     echo '<p><label for="orwod_laurels"><strong>Laurels / awards</strong></label><br><textarea id="orwod_laurels" name="orwod_laurels" class="widefat" rows="4" placeholder="Winner: Best Actor | Boston Film Festival 2025">' . esc_textarea( (string) get_post_meta( $post->ID, '_orwod_laurels', true ) ) . '</textarea><span class="description">One per line: award | festival.</span></p>';
