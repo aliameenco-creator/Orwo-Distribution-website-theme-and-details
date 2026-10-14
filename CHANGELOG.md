@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 — 2026-10-14
+
+- Colours: the bright navy blue is replaced by a dark charcoal grey (header, hero and tile overlays, contact band,
+  buttons' text, footer), with a soft silver accent instead of the lavender-blue. Gold laurels unchanged.
+
 ## 0.3.0 — 2026-10-14
 
 ORWO's catalogue update.

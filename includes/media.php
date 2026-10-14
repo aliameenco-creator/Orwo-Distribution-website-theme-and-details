@@ -78,7 +78,7 @@ add_action( 'admin_post_orwod_media_import', function () {
         // Small progress page that continues automatically (and works as a plain link without JavaScript).
         $next = orwod_media_import_url();
         $total = count( orwod_media_manifest() );
-        echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=' . esc_url( $next ) . '"><title>Adding images…</title><body style="font:16px system-ui;padding:40px;background:#000066;color:#eee"><p>Adding ORWO Distribution images to the Media Library: ' . (int) ( $total - $left ) . ' of ' . (int) $total . '…</p><p><a style="color:#fff" href="' . esc_url( $next ) . '">Continue</a></p>';
+        echo '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=' . esc_url( $next ) . '"><title>Adding images…</title><body style="font:16px system-ui;padding:40px;background:#26272c;color:#eee"><p>Adding ORWO Distribution images to the Media Library: ' . (int) ( $total - $left ) . ' of ' . (int) $total . '…</p><p><a style="color:#fff" href="' . esc_url( $next ) . '">Continue</a></p>';
         exit;
     }
     // All images are in the library: create the editable film records next (never overwrites edited films).
