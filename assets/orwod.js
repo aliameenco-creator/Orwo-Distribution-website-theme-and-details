@@ -152,7 +152,7 @@
     const box = d.createElement('dialog');
     box.className = 'trailer-box';
     box.setAttribute('aria-label', 'Trailer');
-    box.innerHTML = '<div class="trailer-inner"><div class="trailer-head"><span class="trailer-title"></span><a class="text-link trailer-page" href="#">VIEW TITLE ↗</a><button type="button" class="trailer-close" aria-label="Close trailer">×</button></div><div class="video-frame"></div></div>';
+    box.innerHTML = '<div class="trailer-inner"><div class="trailer-head"><span class="trailer-title"></span><a class="button outline trailer-page" href="#">ABOUT THIS FILM ↗</a><button type="button" class="trailer-close" aria-label="Close trailer">×</button></div><div class="video-frame"></div></div>';
     d.body.appendChild(box);
     const frame = box.querySelector('.video-frame');
     const page = box.querySelector('.trailer-page');
@@ -190,7 +190,7 @@
       iframe.addEventListener('load', () => window.setTimeout(() => frame.classList.remove('loading'), 250));
       frame.appendChild(iframe);
       box.querySelector('.trailer-title').textContent = link.dataset.trailerTitle || '';
-      // "View title" only links to another page on this site: hidden on the film's own page (poster, hero button and
+      // "About this film" only links to another page on this site: hidden on the film's own page (poster, hero button and
       // trailer still all link to YouTube there) and never sends visitors off to YouTube.
       let target = null;
       try { target = new URL(link.href, window.location.href); } catch (err) { /* ignore */ }

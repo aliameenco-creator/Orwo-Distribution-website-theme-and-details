@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.4 — 2026-10-16
+
+- Homepage title tiles (Library and the second section) with a trailer now play it in the pop-up; the tile shows a
+  play button and "▶ Watch trailer" on hover. The pop-up has an "About this film ↗" button that opens the film's
+  page (also on phones). Tiles without a trailer still open the film page; "More titles" on film pages are unchanged.
+
 ## 0.3.3 — 2026-10-16
 
 - Trailer pop-up on a film's own page no longer shows "VIEW TITLE ↗" (from the poster or trailer still it linked to

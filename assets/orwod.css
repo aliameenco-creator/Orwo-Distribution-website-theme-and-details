@@ -442,6 +442,8 @@ p { margin: 0 0 1em; }
 .trailer-title { flex: 1; min-width: 0; font: 700 clamp(17px, 2vw, 24px)/1.2 var(--cardo); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .trailer-close { flex: none; width: 46px; height: 46px; background: rgba(0, 0, 0, .4); color: #fff; border: 1px solid rgba(255, 255, 255, .35); font-size: 28px; line-height: 1; cursor: pointer; }
 .trailer-close:hover { background: var(--white); color: var(--navy); }
+.trailer-page { flex: none; min-height: 46px; padding: 10px 22px; }
+.trailer-page[hidden] { display: none; }
 @media (max-width: 640px) {
   .tile-play { width: 48px; height: 48px; margin: -24px 0 0 -24px; }
   .tile-play svg { width: 20px; height: 20px; }
@@ -450,8 +452,9 @@ p { margin: 0 0 1em; }
   .laurels { gap: 10px 14px; }
   .laurel-branch { width: 12px; height: 34px; }
   .laurel-text { max-width: 130px; }
-  .trailer-head { gap: 10px; }
-  .trailer-page { display: none; }
+  .trailer-head { gap: 10px; flex-wrap: wrap; }
+  .trailer-title { flex: 1 1 calc(100% - 56px); }
+  .trailer-page { order: 3; flex: 1 1 100%; min-height: 44px; padding: 10px 16px; font-size: 13px; }
 }
 .trailer-box .video-frame { background: #000 center / cover no-repeat; }
 .trailer-box .video-frame iframe { transition: opacity .35s var(--ease); }

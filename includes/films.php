@@ -139,17 +139,22 @@ function orwod_film_contact( $film ) {
     return is_email( $email ) ? $email : orwod_contact_details()['email'];
 }
 
-/** Homepage/related title tile: opens the film page (where the poster and "Watch trailer" play the trailer). */
-function orwod_film_tile( $film, $heading = 'h3', $sizes = '(max-width: 700px) 50vw, (max-width: 1100px) 50vw, 33vw' ) {
+/**
+ * Title tile. With $trailer (homepage sections) a film that has a trailer plays it in a pop-up with an "About this film"
+ * button; the link itself still goes to the film page (no JavaScript, ctrl/cmd-click). Otherwise it opens the film page.
+ */
+function orwod_film_tile( $film, $heading = 'h3', $sizes = '(max-width: 700px) 50vw, (max-width: 1100px) 50vw, 33vw', $trailer = false ) {
     $film = get_post( $film );
     $id = orwod_film_image_id( $film, 'tile' );
     $title = get_the_title( $film );
     $img = $id ? wp_get_attachment_image( $id, 'orwod-tile', false, array( 'alt' => '', 'loading' => 'lazy', 'decoding' => 'async', 'sizes' => $sizes ) ) : '<span class="tile-blank" aria-hidden="true"></span>';
     $sub = orwod_film_subtitle( $film );
     $badge = orwod_laurel_badge( $film );
-    return '<a class="title-tile" href="' . esc_url( get_permalink( $film ) ) . '" data-reveal><span class="tile-media">' . $img . '</span>'
+    $play = $trailer && orwod_film_trailer( $film );
+    return '<a class="title-tile' . ( $play ? ' has-trailer' : '' ) . '" href="' . esc_url( get_permalink( $film ) ) . '"' . ( $play ? orwod_trailer_attrs( $film ) : '' ) . ' data-reveal><span class="tile-media">' . $img . '</span>'
         . ( $badge ? '<span class="tile-laurel">' . $badge . '</span>' : '' )
-        . '<span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( $title ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">VIEW TITLE ↗</span></span></a>';
+        . ( $play ? '<span class="tile-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>' : '' )
+        . '<span class="tile-text"><' . $heading . ' class="tile-title">' . esc_html( $title ) . '</' . $heading . '>' . ( $sub ? '<span class="tile-sub">' . esc_html( $sub ) . '</span>' : '' ) . '<span class="tile-more" aria-hidden="true">' . ( $play ? '▶ WATCH TRAILER' : 'VIEW TITLE ↗' ) . '</span></span></a>';
 }
 
 /** Previous/next film in homepage order (unlisted films use all published films in title order). */
