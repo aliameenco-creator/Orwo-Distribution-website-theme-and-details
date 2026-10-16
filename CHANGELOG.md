@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 — 2026-10-16
+
+- Trailer pop-up on a film's own page no longer shows "VIEW TITLE ↗" (from the poster or trailer still it linked to
+  YouTube). Elsewhere it still opens the film page, and it never links off the site.
+
 ## 0.3.2 — 2026-10-14
 
 - Trailers start faster: the site connects to YouTube in the background after the page loads (and again on hover),

@@ -190,9 +190,13 @@
       iframe.addEventListener('load', () => window.setTimeout(() => frame.classList.remove('loading'), 250));
       frame.appendChild(iframe);
       box.querySelector('.trailer-title').textContent = link.dataset.trailerTitle || '';
-      const onFilmPage = link.closest('.film-hero');
-      page.hidden = !!onFilmPage;
-      page.href = onFilmPage ? '#' : link.href;
+      // "View title" only links to another page on this site: hidden on the film's own page (poster, hero button and
+      // trailer still all link to YouTube there) and never sends visitors off to YouTube.
+      let target = null;
+      try { target = new URL(link.href, window.location.href); } catch (err) { /* ignore */ }
+      const usable = target && target.origin === window.location.origin && target.pathname.replace(/\/+$/, '') !== window.location.pathname.replace(/\/+$/, '');
+      page.hidden = !usable;
+      page.href = usable ? target.href : '#';
       box.showModal();
       box.querySelector('.trailer-close').focus();
     });
